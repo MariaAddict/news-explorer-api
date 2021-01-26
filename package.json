@@ -1,0 +1,26 @@
+{
+  "name": "news-explorer-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": ".eslintrc.js",
+  "dependencies": {
+    "express": "^4.17.1",
+    "nodemon": "^2.0.7"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MariaAddict/news-explorer-api.git"
+  },
+  "keywords": [],
+  "author": "Maria Kanygina",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MariaAddict/news-explorer-api/issues"
+  },
+  "homepage": "https://github.com/MariaAddict/news-explorer-api#readme"
+}
