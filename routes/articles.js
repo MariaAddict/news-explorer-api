@@ -4,7 +4,7 @@ const {
 } = require('../controllers/articles');
 
 router.get('/articles', getArticles);
-router.post('/articles', createArticle);
-router.delete('/articles/articleId', deleteArticle);
+// router.post('/articles', createArticle);
+// router.delete('/articles/articleId', deleteArticle);
 
 module.exports = router;
