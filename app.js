@@ -17,6 +17,14 @@ mongoose.connect('mongodb://localhost:27017/news-explorerdb', {
 
 app.use(bodyParser.json());
 
+app.use((req, res, next) => {
+  req.user = {
+    _id: '601141f9c63f2c299f47c6a5',
+  };
+
+  next();
+});
+
 app.use('/', usersRouter);
 
 app.listen(PORT, () => {
