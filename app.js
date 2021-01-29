@@ -1,6 +1,7 @@
 const express = require('express');
 
 const bodyParser = require('body-parser');
+const { errors } = require('celebrate');
 
 const { PORT = 3000 } = process.env;
 const mongoose = require('mongoose');
@@ -21,6 +22,7 @@ app.use(requestLogger);
 app.use('/', router);
 
 app.use(errorLogger);
+app.use(errors());
 app.use((err, req, res, next) => {
   if (err.statusCode) {
     res.status(err.statusCode).send({ message: err.message });
