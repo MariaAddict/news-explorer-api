@@ -6,6 +6,7 @@ const { PORT = 3000 } = process.env;
 const mongoose = require('mongoose');
 
 const router = require('./routes/index');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const app = express();
 mongoose.connect('mongodb://localhost:27017/news-explorerdb', {
@@ -16,9 +17,10 @@ mongoose.connect('mongodb://localhost:27017/news-explorerdb', {
 });
 
 app.use(bodyParser.json());
-
+app.use(requestLogger);
 app.use('/', router);
 
+app.use(errorLogger);
 app.use((err, req, res, next) => {
   if (err.statusCode) {
     res.status(err.statusCode).send({ message: err.message });
