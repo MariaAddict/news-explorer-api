@@ -6,7 +6,6 @@ const { PORT = 3000 } = process.env;
 const mongoose = require('mongoose');
 
 const router = require('./routes/index');
-const NotFoundError = require('./errors/not-found');
 
 const app = express();
 mongoose.connect('mongodb://localhost:27017/news-explorerdb', {
@@ -18,19 +17,7 @@ mongoose.connect('mongodb://localhost:27017/news-explorerdb', {
 
 app.use(bodyParser.json());
 
-app.use((req, res, next) => {
-  req.user = {
-    _id: '6013dde3806cccb036422717',
-  };
-
-  next();
-});
-
 app.use('/', router);
-
-app.use(() => {
-  throw new NotFoundError('Запрашиваемый ресурс не найден');
-});
 
 app.use((err, req, res, next) => {
   if (err.statusCode) {

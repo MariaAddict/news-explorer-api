@@ -88,4 +88,6 @@ const userLogin = (req, res, next) => {
     .catch(next);
 };
 
-module.exports = { getUser, createUser, userLogin };
+module.exports = {
+  getUser, createUser, userLogin, JWT_SECRET,
+};
