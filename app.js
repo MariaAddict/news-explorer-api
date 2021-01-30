@@ -10,6 +10,7 @@ const mongoose = require('mongoose');
 
 const router = require('./routes/index');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
+const errorHendler = require('./middlewares/error-hendler');
 
 const app = express();
 mongoose.connect(NODE_ENV === 'production' ? MONGO_URL : 'mongodb://localhost:27017/news-explorerdb', {
@@ -27,14 +28,7 @@ app.use('/', router);
 
 app.use(errorLogger);
 app.use(errors());
-app.use((err, req, res, next) => {
-  if (err.statusCode) {
-    res.status(err.statusCode).send({ message: err.message });
-    return;
-  }
-  res.status(500).send({ message: `На сервере произошла ошибка: ${err.message}` });
-  next();
-});
+app.use(errorHendler);
 
 app.listen(PORT, () => {
   // eslint-disable-next-line no-console
