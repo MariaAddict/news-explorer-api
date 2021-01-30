@@ -2,14 +2,14 @@ const { celebrate, Joi } = require('celebrate');
 
 const validateUserLogin = celebrate({
   body: Joi.object().keys({
-    email: Joi.string().required().pattern(/\w+@[a-z]+\.[a-z]{2,3}/),
+    email: Joi.string().required().pattern(/\w+@[a-z0-9]+\.[a-z]{2,3}/),
     password: Joi.string().required().min(8),
   }),
 });
 
 const validateCreateUser = celebrate({
   body: Joi.object().keys({
-    email: Joi.string().required().pattern(/\w+@[a-z]+\.[a-z]{2,3}/),
+    email: Joi.string().required().pattern(/\w+@[a-z0-9]+\.[a-z]{2,3}/),
     password: Joi.string().required().min(8),
     name: Joi.string().required().min(2).max(30),
   }),

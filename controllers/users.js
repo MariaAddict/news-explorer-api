@@ -6,6 +6,7 @@ const { NODE_ENV, JWT_SECRET } = process.env;
 const User = require('../models/user');
 const NotFoundError = require('../errors/not-found');
 const ValidationError = require('../errors/validation-error');
+const AutorizstionError = require('../errors/autorization');
 
 const getUser = (req, res, next) => User.findById(req.user._id)
   .then((data) => {
@@ -63,25 +64,19 @@ const userLogin = (req, res, next) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    const err = new Error('Некорректные данные пользователя');
-    err.statusCode = 400;
-    return next(err);
+    return next(new AutorizstionError('Некорректные данные пользователя'));
   }
 
   return User.findOne({ email }).select('+password')
     .then((user) => {
       if (!user) {
-        const err = new Error('Некорректные данные пользователя');
-        err.statusCode = 401;
-        return next(err);
+        return next(new AutorizstionError('Некорректные данные пользователя'));
       }
 
       return bcrypt.compare(password, user.password)
         .then((matched) => {
           if (!matched) {
-            const err = new Error('Некорректные данные пользователя');
-            err.statusCode = 401;
-            return next(err);
+            return next(new AutorizstionError('Некорректные данные пользователя'));
           }
           const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : JWT_SECRET_DEV, { expiresIn: '7d' });
           return res.send({ token });
