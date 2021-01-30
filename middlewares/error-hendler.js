@@ -3,7 +3,7 @@ const errorHendler = (err, req, res, next) => {
     res.status(err.statusCode).send({ message: err.message });
     return;
   }
-  res.status(500).send({ message: `На сервере произошла ошибка: ${err.message}` });
+  res.status(500).send({ message: 'На сервере произошла ошибка' });
   next();
 };
 
