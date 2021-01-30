@@ -1,6 +1,8 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const JWT_SECRET = require('crypto').randomBytes(32).toString('hex');
+
+const JWT_SECRET_DEV = '582ef60b09790b389a69153edfc117fa7594c7a39df16f01a9469203f91cf3a8';
+const { NODE_ENV, JWT_SECRET } = process.env;
 const User = require('../models/user');
 const NotFoundError = require('../errors/not-found');
 const ValidationError = require('../errors/validation-error');
@@ -81,7 +83,7 @@ const userLogin = (req, res, next) => {
             err.statusCode = 401;
             return next(err);
           }
-          const token = jwt.sign({ _id: user._id }, JWT_SECRET, { expiresIn: '7d' });
+          const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : JWT_SECRET_DEV, { expiresIn: '7d' });
           return res.send({ token });
         });
     })
@@ -89,5 +91,5 @@ const userLogin = (req, res, next) => {
 };
 
 module.exports = {
-  getUser, createUser, userLogin, JWT_SECRET,
+  getUser, createUser, userLogin, JWT_SECRET_DEV,
 };
