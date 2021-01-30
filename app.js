@@ -5,14 +5,14 @@ const bodyParser = require('body-parser');
 const { errors } = require('celebrate');
 const cors = require('cors');
 
-const { PORT = 3001 } = process.env;
+const { NODE_ENV, PORT = 3001, MONGO_URL = 'mongodb://localhost:27017/news-explorerdb' } = process.env;
 const mongoose = require('mongoose');
 
 const router = require('./routes/index');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const app = express();
-mongoose.connect('mongodb://localhost:27017/news-explorerdb', {
+mongoose.connect(NODE_ENV === 'production' ? MONGO_URL : 'mongodb://localhost:27017/news-explorerdb', {
   useNewUrlParser: true,
   useCreateIndex: true,
   useFindAndModify: false,
