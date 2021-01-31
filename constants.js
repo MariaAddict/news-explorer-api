@@ -6,6 +6,7 @@ const articlesNotFoundMessage = 'Статьи не найдены';
 const articleNotFoundMessage = 'Статья не найдена';
 const articleIsIncorrectMessage = 'Неккоректные данные статьи';
 const notOwnerMessage = 'Вы не можете удалить статью другого пользователя';
+const serverMessage = 'На сервере произошла ошибка';
 
 module.exports = {
   autorizstionMessage,
@@ -16,4 +17,5 @@ module.exports = {
   articleNotFoundMessage,
   articleIsIncorrectMessage,
   notOwnerMessage,
+  serverMessage,
 };
