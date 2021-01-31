@@ -8,17 +8,22 @@ const User = require('../models/user');
 const NotFoundError = require('../errors/not-found');
 const ValidationError = require('../errors/validation-error');
 const AutorizstionError = require('../errors/autorization');
+const {
+  userNotFoundMessage,
+  userIsIncorrectMessage,
+  userAutorizstionMessage,
+} = require('../constants');
 
 const getUser = (req, res, next) => User.findById(req.user._id)
   .then((data) => {
     if (!data) {
-      throw new NotFoundError('Пользователь не найден');
+      throw new NotFoundError(userNotFoundMessage);
     }
     return res.send(data);
   })
   .catch((err) => {
     if (err.name === 'CastError') {
-      const error = new NotFoundError('Нет пользователя с таким id');
+      const error = new NotFoundError(userNotFoundMessage);
       return next(error);
     }
     return next(err);
@@ -30,14 +35,14 @@ const createUser = (req, res, next) => {
   } = req.body;
 
   if (!email || !password) {
-    const err = new Error('Некорректные данные пользователя');
+    const err = new Error(userIsIncorrectMessage);
     err.statusCode = 400;
     return next(err);
   }
 
   return User.findOne({ email }).then((user) => {
     if (user) {
-      const err = new Error('Пользователь уже зарегистрирован');
+      const err = new Error(userAutorizstionMessage);
       err.statusCode = 409;
       return next(err);
     }
@@ -52,7 +57,7 @@ const createUser = (req, res, next) => {
       }))
       .catch((err) => {
         if (err.name === 'ValidationError') {
-          const error = new ValidationError('Некорректные данные пользователя');
+          const error = new ValidationError(userIsIncorrectMessage);
           return next(error);
         }
         return next(err);
@@ -65,19 +70,19 @@ const userLogin = (req, res, next) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    return next(new AutorizstionError('Некорректные данные пользователя'));
+    return next(new AutorizstionError(userIsIncorrectMessage));
   }
 
   return User.findOne({ email }).select('+password')
     .then((user) => {
       if (!user) {
-        return next(new AutorizstionError('Некорректные данные пользователя'));
+        return next(new AutorizstionError(userIsIncorrectMessage));
       }
 
       return bcrypt.compare(password, user.password)
         .then((matched) => {
           if (!matched) {
-            return next(new AutorizstionError('Некорректные данные пользователя'));
+            return next(new AutorizstionError(userIsIncorrectMessage));
           }
           const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : JWT_SECRET_DEV, { expiresIn: '7d' });
           return res.send({ token });
