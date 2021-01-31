@@ -34,7 +34,7 @@ const createUser = (req, res, next) => {
     email, password, name,
   } = req.body;
 
-  if (!email || !password) {
+  if (!email || !password || !name) {
     const err = new Error(userIsIncorrectMessage);
     err.statusCode = 400;
     return next(err);
@@ -70,13 +70,13 @@ const userLogin = (req, res, next) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    return next(new AutorizstionError(userIsIncorrectMessage));
+    throw new AutorizstionError(userIsIncorrectMessage);
   }
 
   return User.findOne({ email }).select('+password')
     .then((user) => {
       if (!user) {
-        return next(new AutorizstionError(userIsIncorrectMessage));
+        throw new AutorizstionError(userIsIncorrectMessage);
       }
 
       return bcrypt.compare(password, user.password)
