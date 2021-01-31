@@ -1,7 +1,8 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-const JWT_SECRET_DEV = '582ef60b09790b389a69153edfc117fa7594c7a39df16f01a9469203f91cf3a8';
+const { JWT_SECRET_DEV } = require('../config');
+
 const { NODE_ENV, JWT_SECRET } = process.env;
 const User = require('../models/user');
 const NotFoundError = require('../errors/not-found');
@@ -86,5 +87,5 @@ const userLogin = (req, res, next) => {
 };
 
 module.exports = {
-  getUser, createUser, userLogin, JWT_SECRET_DEV,
+  getUser, createUser, userLogin,
 };
