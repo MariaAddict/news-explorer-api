@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const validator = require('validator');
 
 const userSchema = new mongoose.Schema({
   email: {
@@ -7,7 +8,7 @@ const userSchema = new mongoose.Schema({
     unique: true,
     validate: {
       validator(v) {
-        return /\w+@[a-z0-9]+\.[a-z]{2,3}/g.test(v);
+        return validator.isEmail(v);
       },
       message: 'Неправильный email',
     },
