@@ -11,7 +11,6 @@ const articleSchema = new mongoose.Schema({
     type: String,
     required: true,
     minlength: 1,
-    maxlength: 30,
   },
   text: {
     type: String,
