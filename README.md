@@ -6,4 +6,7 @@ _Проект представляет собой бэкэнд для проек
 _Реализована авторизация и входпользователя_
 
 _Доменное имя сервера:_
-(https://api.mortany-news.students.nomoreparties.xyz/)
+(https://api.mort-news-exp.students.nomoreparties.space/)
+
+### Проект 
+(https://mort-news-exp.students.nomoreparties.space/)
