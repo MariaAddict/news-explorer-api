@@ -5,14 +5,16 @@ const {
   articlesNotFoundMessage, articleIsIncorrectMessage, articleNotFoundMessage, notOwnerMessage,
 } = require('../constants');
 
+const checkOwnerArticle = (item, idUser) => JSON.stringify(item.owner) === JSON.stringify(idUser);
 const getArticles = (req, res, next) => {
-  Article.find()
+  Article.find().select('+owner')
     .populate('user')
     .then((data) => {
       if (!data) {
         throw new NotFoundError(articleNotFoundMessage);
       }
-      res.send(data);
+      const articles = data.filter((item) => checkOwnerArticle(item, req.user._id));
+      res.send(articles);
     })
     .catch((err) => {
       if (err.name === 'CastError') {
@@ -46,7 +48,7 @@ const deleteArticle = (req, res, next) => {
       if (!article) {
         throw new NotFoundError(articlesNotFoundMessage);
       }
-      if (JSON.stringify(article.owner) === JSON.stringify(req.user._id)) {
+      if (checkOwnerArticle(article, req.user._id)) {
         return Article.findByIdAndRemove(req.params.articleId).then((data) => res.send(data));
       }
       const err = new Error(notOwnerMessage);
