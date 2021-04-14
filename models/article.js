@@ -11,14 +11,13 @@ const articleSchema = new mongoose.Schema({
     type: String,
     required: true,
     minlength: 1,
-    maxlength: 30,
   },
   text: {
     type: String,
     required: true,
     minlength: 1,
   },
-  data: {
+  date: {
     type: Date,
     required: true,
     default: Date.now,
@@ -54,6 +53,10 @@ const articleSchema = new mongoose.Schema({
     ref: 'user',
     required: true,
     select: false,
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
   },
 });
 

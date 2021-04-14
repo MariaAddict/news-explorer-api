@@ -18,8 +18,9 @@ const validateCreateUser = celebrate({
 const validateCreateArticle = celebrate({
   body: Joi.object().keys({
     keyword: Joi.string().required().min(1).max(30),
-    title: Joi.string().required().min(1).max(30),
+    title: Joi.string().required().min(1),
     text: Joi.string().required().min(1),
+    date: Joi.string(),
     source: Joi.string().required().min(1).max(30),
     link: Joi.string().required().pattern(/https?:\/\/(w{3})?\.?[0-9A-Za-z\-._~:/?#[\]@!$&'()*,+;=]#?/),
     image: Joi.string().required().pattern(/https?:\/\/(w{3})?\.?[0-9A-Za-z\-._~:/?#[\]@!$&'()*,+;=]#?/),
